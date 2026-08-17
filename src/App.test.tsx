@@ -49,6 +49,22 @@ describe("App", () => {
     expect(search).toHaveFocus();
   });
 
+  it("keeps slash input in the handoff note editor", async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    await screen.findByRole("heading", {
+      name: "Card authorization latency above target",
+    });
+
+    const note = screen.getByLabelText("Add handoff note");
+    const search = screen.getByRole("searchbox", { name: "Search handoffs" });
+    await user.type(note, "Escalate to Payments/Platform");
+
+    expect(note).toHaveFocus();
+    expect(note).toHaveValue("Escalate to Payments/Platform");
+    expect(search).toHaveValue("");
+  });
+
   it("adds a note to the selected handoff", async () => {
     const user = userEvent.setup();
     render(<App />);
